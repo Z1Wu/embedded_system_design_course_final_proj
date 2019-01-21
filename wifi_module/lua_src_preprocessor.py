@@ -1,4 +1,3 @@
-import os
 import sys
 import re
 """
@@ -7,7 +6,6 @@ import re
     一下几个部分:
         1. 调试时使用的 print
         2. 注释
-        3.
 """
 
 USAGE = "python <this_script> <path_of_your_source_file>"
@@ -23,7 +21,7 @@ except:
     print(USAGE)
 
 # 提前检测是否有命名冲突
-new_src = "new_" + origin_src
+new_src = "build_" + origin_src
 
 with open(origin_src, "r", encoding = "utf-8") as rf:
     with open(new_src, "w", encoding = "utf-8") as wf:
