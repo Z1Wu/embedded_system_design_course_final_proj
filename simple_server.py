@@ -48,7 +48,6 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(response)
         elif(self.path == "/poll"):
             # polling the lcok state
-            # write password file
             self.wfile.write(self.handle_http(200, state))
         elif(self.path == "/bulma.css"):
             # write password file
@@ -60,12 +59,8 @@ class MyHandler(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
         pw = self.rfile.read(content_len)
         print("post data : ", pw)
-        # todo:should retrun a result to broswer
+
         # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
-        # Data to wifi module  
-        # data_2_wifi = None
-        # # data 
-        # data_2_browser = None
         data = None
         if pw.decode == PASSWORD: 
             data = b't'
@@ -74,8 +69,10 @@ class MyHandler(BaseHTTPRequestHandler):
         else:
             pass
         
-        
-        
+        SendDataToWifiModule(REMOTE_HOST, REMOTE_HOST_PORT, data).run()
+        # 把结果返回给浏览器
+        self.wfile.write(self.handle_http(200, data, "text/css"))
+
     def handle_http(self, status_code, content, type = 'text/html'):
         self.send_response(status_code)
         self.send_header('Content-type', type)
@@ -83,7 +80,7 @@ class MyHandler(BaseHTTPRequestHandler):
         return bytes(content, 'UTF-8')
 
 
-class sendDataToWifiModule(threading.Thread):
+class SendDataToWifiModule(threading.Thread):
     '''
         send data the remote wifi module, data is required to be 
     '''
@@ -93,12 +90,15 @@ class sendDataToWifiModule(threading.Thread):
         self.port_num = port_num
         self.data = data
     def run(self):
+        print("send data to wifi module")
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         conn = sock.connect((self.host_name, self.port_num))
-        conn.send(self.data)        
-    
+        conn.send(self.data)
+        sock.close()
+        print("done send data to wifi module")
 
 # another handle the input from wifi module
+# 等待来自
 def receiver():
     global connection
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

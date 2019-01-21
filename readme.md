@@ -5,6 +5,10 @@
 进展：https://docs.qq.com/doc/DWWpPYVJZQWJOZkFi
 
 
+## 基本构造
+
+
+
 ## 连线方式
 
 ### 51 单片机连接 esp8266 模块

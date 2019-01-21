@@ -5,6 +5,9 @@
 #define STATE_VALIAD 1
 #define STATE_INVALIAD 2
 
+// 轮询开门状态的间隔, 单位(ms)
+#define POLL_INTERVAL 5000
+
 u8 curPos = 0;
 u8 first_time = 1;
 u8 info_true[8] = {26, 26, 26, 26, 26, 26, 26, 26};
@@ -71,6 +74,12 @@ void main(void) {
                         break;
                     default: break;
                 }
+            }
+
+            if(++msecond >= POLL_INTERVAL)
+            {
+                msecond = 0;
+                
             }
 
             if(++cnt50ms >= 50)
