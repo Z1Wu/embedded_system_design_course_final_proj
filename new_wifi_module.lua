@@ -55,6 +55,14 @@ tmr.alarm(1, 1000, 1, function()
    end
 end)
 
+function ledLight()
+    ledPin = 4
+    gpio.mode(ledPin,gpio.OUTPUT)
+    gpio.write(ledPin, 0)
+    tmr.delay(3000)
+    gpio.write(ledPin, 1)
+end
+
 uart.on("data", 8,
   function(data)
     if data == "quitquit" then
@@ -63,13 +71,5 @@ uart.on("data", 8,
     else
         sendData(remote_server_ip, remote_server_port, data)
     end
-end, 1)
-
-function ledLight()
-    ledPin = 4
-    gpio.mode(ledPin,gpio.OUTPUT)
-    gpio.write(ledPin, 0)
-    tmr.delay(3000)
-    gpio.write(ledPin, 1)
-end
+end, 0)
 

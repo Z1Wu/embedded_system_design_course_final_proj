@@ -65,8 +65,17 @@ tmr.alarm(1, 1000, 1, function()
    end
 end)
 
+function ledLight()
+    ledPin = 4
+    gpio.mode(ledPin,gpio.OUTPUT)
+    gpio.write(ledPin, 0)
+    tmr.delay(3000)
+    gpio.write(ledPin, 1)
+end
+
 -- uart 
--- 增加鲁棒性 
+-- 增加鲁棒性, 最后一个参数应该设置成0, 避免从 uart 的输入进入到 esp8266 中的interpreter 中
+-- 由于执行的顺序问题，这个函数应该放在最后面，不然串口写入的脚本无法进入到控制台被执行
 uart.on("data", 8,
   function(data)
     print("receive from uart:", data)
@@ -78,13 +87,5 @@ uart.on("data", 8,
         -- receive input password from the door, send data to server and wait for response 
         sendData(remote_server_ip, remote_server_port, data)
     end
-end, 1)
-
-function ledLight()
-    ledPin = 4
-    gpio.mode(ledPin,gpio.OUTPUT)
-    gpio.write(ledPin, 0)
-    tmr.delay(3000)
-    gpio.write(ledPin, 1)
-end
+end, 0)
 
