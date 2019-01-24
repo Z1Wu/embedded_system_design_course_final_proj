@@ -1,5 +1,9 @@
 import time
+import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from tinydb import TinyDB, Query
+from datetime import datetime
+
 
 import logging
 import threading
@@ -10,30 +14,52 @@ HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 9000
 
 # REMOTE WIFI MODULE
-# todo 
 # REMOTE_HOST = '192.168.199.228'
 # REMOTE_HOST_PORT = 8080
-# test
 REMOTE_HOST = '127.0.0.1'
 REMOTE_HOST_PORT = 9999
 
+# create a db module
+db = TinyDB("db.json")
+
+# todo:regex expression to match static files
+# static_file = 
 
 # STATE STRING 
 STATE_PASSWORD_RETTING_SUCCESSFULLY = "密码重置成功"
 STATE_PASSWORD_VALID = "密码正确，大门打开"
 STATE_PASSWORD_INVALID = "密码错误"
 STATE_WAITING_INPUT = '等待大门密码输入。。。'
-STATE_OPEN_DOOR = ''
+STATE_DOOR_OPEN = 'DOOR OPEN'
+STATE_DOOR_CLOSE = 'DOOR CLOSE'
+STATE_DOOR_ALERT = 'DOOR ALERT'
 
 PASSWORD = "12345678"
 connection = None
 
-# sock = None
+def get_current_time():
+    return str(datetime.now())
 
-TIMEOUT = 0.5
+def insert_open_record(res):
+    db.insert({'event' : "open", 'res' : res, 'time' : get_current_time()})
+
+def insert_alert_record():
+    # 记录开门的消息
+    db.insert({'event' : "alert", 'res' : "null", 'time' : get_current_time()})
+
+def handle_static_file(rel_path):
+    prefix = "../front_end"
+    content = None
+    try:
+        path = prefix + rel_path
+        print("static => read file in " + path)
+        content = open(path, "r").read()    
+    except FileNotFoundError:
+        content = "File not found"
+    return content
+
 # share variable, will be altered by the receiver thread.
 state = STATE_WAITING_INPUT
-
 WATING_FOR_CONNECT = False
 
 class MyHandler(BaseHTTPRequestHandler):
@@ -43,20 +69,25 @@ class MyHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if(self.path == "/"):
+        path = self.path
+        if(path == "/" or '.html' in path):
             # 作为静态文件服务器
-            try:
-                content = open("./front_end/index.html", "r").read()
-                response = self.handle_http(200, content)
-            except FileNotFoundError:
-                content = "file not found"
+            # content = None
+            # try:
+            #     content = open("../front_end/index.html", "r").read()
+            # except FileNotFoundError:
+            #     content = "file not found"
+            if path == '/':
+                path += 'index.html'
+            content = handle_static_file(path)
+            response = self.handle_http(200, content, "text/html")
             self.wfile.write(response)
         elif(self.path == "/poll"):
             # polling the lcok state
             self.wfile.write(self.handle_http(200, state))
-        elif(self.path == "/bulma.css"):
+        elif('.css' in path):
             # write password file
-            content = open("./front_end/bulma.css", "r").read()        
+            content = handle_static_file(path)        
             self.wfile.write(self.handle_http(200, content, "text/css"))
 
     def do_POST(self):
@@ -66,7 +97,6 @@ class MyHandler(BaseHTTPRequestHandler):
             content_len = int(self.headers.get('content-length', 0))
             pw = self.rfile.read(content_len)
             print("post data : ", pw)
-
             # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
             data = None
             if pw.decode == PASSWORD: 
@@ -104,26 +134,39 @@ class SendDataToWifiModule(threading.Thread):
         sock.send(self.data)
         sock.close()
         print("done send data to wifi module")
+        
 
 # another handle the input from wifi module
 # 等待来自
 def receiver():
-    global connection
+    global connection, state
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(('0.0.0.0',8080))
     sock.listen(5)
     while True:
         connection = None
-        print("wating connection from wifi module:")
+        print("wating connection from wifi module ... ")
         connection, address = sock.accept()
         print("connect to wifi module with address: ", address)
         buf = connection.recv(1024)            
-        input_pw = buf.decode()
-        print("from wifi module:", input_pw)
-        if(input_pw == PASSWORD):
+        input = buf.decode()
+        print("from wifi module:", input)
+        
+        # the check order matters
+        if input == 'oooooooo':
+            state = STATE_DOOR_OPEN
+        elif input == 'cccccccc':
+            state = STATE_DOOR_CLOSE
+        elif input == 'aaaaaaaa':
+            state = STATE_DOOR_ALERT
+            insert_alert_record()
+        elif input == PASSWORD:
             connection.send(b"t")
+            insert_open_record(res = "successded to open")
         else:
             connection.send(b"f")
+            insert_open_record(res = "fail to open")
+
 
 # 如果收到信息，则打印
 thread_recv = threading.Thread(target=receiver)
