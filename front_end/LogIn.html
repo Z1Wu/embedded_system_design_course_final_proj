@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sign In</title>
+    <link rel="stylesheet" href="./css/bulma.css">
+    <script src="./js/jquery-3.3.1.js"></script>
+    <script src="./js/login.js"></script>
+</head>
+
+<body>
+    <div class="container" style="width:30%; margin-top: 15%;">
+        <div class="notification">
+
+            <div class="field">
+                <label class="label">Username</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input" type="text" id="name" placeholder="Admin" onchange="input_name_change()">
+                    <span class="icon is-small is-left">
+                        <img src="./src/img/user.png">
+                    </span>
+                </div>
+                <p class="help is-danger" id ="name_wrong"></p>
+            </div>
+
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input" type="password" id="password" placeholder="Password" onchange="input_password_change()">
+                    <span class="icon is-small is-left">
+                        <img src="./src/img/password.png">
+                    </span>
+                </div>
+                <p class="help is-danger" id = "password_wrong"></p>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button class="button is-link" onclick="sign_in()">Submit</button>
+                </div>
+                <div class="control">
+                    <a class="button is-text" href="./index.html">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
