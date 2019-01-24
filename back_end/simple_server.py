@@ -4,7 +4,6 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from tinydb import TinyDB, Query
 from datetime import datetime
 
-
 import logging
 import threading
 import socket
@@ -14,10 +13,10 @@ HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 9000
 
 # REMOTE WIFI MODULE
-# REMOTE_HOST = '192.168.199.228'
-# REMOTE_HOST_PORT = 8080
-REMOTE_HOST = '127.0.0.1'
-REMOTE_HOST_PORT = 9999
+REMOTE_HOST = '192.168.199.228'
+REMOTE_HOST_PORT = 8080
+# REMOTE_HOST = '127.0.0.1'
+# REMOTE_HOST_PORT = 9999
 
 # create a db module
 db = TinyDB("db.json")
@@ -29,7 +28,7 @@ db = TinyDB("db.json")
 STATE_PASSWORD_RETTING_SUCCESSFULLY = "密码重置成功"
 STATE_PASSWORD_VALID = "密码正确，大门打开"
 STATE_PASSWORD_INVALID = "密码错误"
-STATE_WAITING_INPUT = '等待大门密码输入。。。'
+STATE_WAITTING_INPUT = '等待大门密码输入。。。'
 STATE_DOOR_OPEN = 'DOOR OPEN'
 STATE_DOOR_CLOSE = 'DOOR CLOSE'
 STATE_DOOR_ALERT = 'DOOR ALERT'
@@ -47,22 +46,37 @@ def insert_alert_record():
     # 记录开门的消息
     db.insert({'event' : "alert", 'res' : "null", 'time' : get_current_time()})
 
-def handle_static_file(rel_path):
-    prefix = "../front_end"
-    content = None
-    try:
-        path = prefix + rel_path
-        print("static => read file in " + path)
-        content = open(path, "r").read()    
-    except FileNotFoundError:
-        content = "File not found"
-    return content
-
 # share variable, will be altered by the receiver thread.
-state = STATE_WAITING_INPUT
+state = STATE_WAITTING_INPUT
 WATING_FOR_CONNECT = False
 
 class MyHandler(BaseHTTPRequestHandler):
+    
+    # static member
+    STATIC_FILE_PATTERN = r'.*(/|\.html|\.js|\.css|\.png)$'
+    
+    suffix2MIME = {
+        "png" : "image/png",
+        "jpeg" : "image/jpeg",
+        "html": "text/html",
+        "js":"text/javascript",
+        "css":"text/css"
+    }
+
+    def handle_static_file(self, rel_path, is_binary = False):
+        prefix = "../front_end"
+        content = None
+        try:
+            path = prefix + rel_path
+            print("static => read file in " + path)
+            mode = "r"
+            if is_binary :
+                mode = "rb"
+            content = open(path, mode).read()    
+        except FileNotFoundError:
+            content = "File not found"
+        return content
+    
     def do_HEAD(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
@@ -70,25 +84,21 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path
-        if(path == "/" or '.html' in path):
-            # 作为静态文件服务器
-            # content = None
-            # try:
-            #     content = open("../front_end/index.html", "r").read()
-            # except FileNotFoundError:
-            #     content = "file not found"
-            if path == '/':
+        static_file_match = re.match(MyHandler.STATIC_FILE_PATTERN, path)
+        
+        if static_file_match != None:
+            suffix = static_file_match.group(1)
+            is_binary = False
+            print("suffix: " + suffix)
+            if suffix == '/':
+                suffix = '.html'
                 path += 'index.html'
-            content = handle_static_file(path)
-            response = self.handle_http(200, content, "text/html")
+            mime_type = MyHandler.suffix2MIME[suffix[1:]] 
+            if not mime_type.startswith('text'):
+                is_binary = True
+            content = self.handle_static_file(path, is_binary)
+            response = self.handle_http(200, content, mime_type)
             self.wfile.write(response)
-        elif(self.path == "/poll"):
-            # polling the lcok state
-            self.wfile.write(self.handle_http(200, state))
-        elif('.css' in path):
-            # write password file
-            content = handle_static_file(path)        
-            self.wfile.write(self.handle_http(200, content, "text/css"))
 
     def do_POST(self):
         print("receive post request from browser", self.path)
@@ -99,9 +109,10 @@ class MyHandler(BaseHTTPRequestHandler):
             print("post data : ", pw)
             # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
             data = None
-            if pw.decode == PASSWORD: 
+            pw_str = pw.decode(encoding = 'utf-8')
+            if pw_str == PASSWORD: 
                 data = b't'
-            elif pw.decode != PASSWORD:
+            elif pw_str != PASSWORD:
                 data = b'f'
             else:
                 pass
@@ -114,6 +125,8 @@ class MyHandler(BaseHTTPRequestHandler):
         self.send_response(status_code)
         self.send_header('Content-type', type)
         self.end_headers()
+        if not type.startswith("text"):
+            return content
         return bytes(content, 'UTF-8')
 
 
@@ -141,7 +154,7 @@ class SendDataToWifiModule(threading.Thread):
 def receiver():
     global connection, state
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.bind(('0.0.0.0',8080))
+    sock.bind(('0.0.0.0',9090))
     sock.listen(5)
     while True:
         connection = None
