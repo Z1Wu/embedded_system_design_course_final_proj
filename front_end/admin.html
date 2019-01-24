@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./css/bulma.css">
     <script src="./js/jquery-3.3.1.js"></script>
     <script src="./js/admin.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -43,26 +44,107 @@
             <nav class="tabs is-boxed is-fullwidth">
                 <div class="container">
                     <ul>
-                        <li class="is-active">
+                        <li id="overview" class="is-active">
                             <a>Overview</a>
                         </li>
-                        <li>
-                            <a>Change Login Info</a>
+                        <li id="change_login_info" onclick="info_change_click()">
+                            <a data-toggle="modal" data-target="#change_info">Change Login Info</a>
                         </li>
-                        <li>
-                            <a>Change Lock Password </a>
+                        <li id="change_pass" onclick="pass_change_click()">
+                            <a data-toggle="modal" data-target="#change_password">Change Lock Password </a>
                         </li>
-                        <li>
-                            <a>View status</a>
+                        <li id="get_status" onclick="get_status()">
+                            <a data-toggle="modal" data-target="#view_status">View status</a>
                         </li>
-                        <li>
-                            <a>View log</a>
+                        <li id="get_log" onclick="get_log()">
+                            <a data-toggle="modal" data-target="#view_log">View log</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </section>
+    <div class="modal" id="change_info">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Change Login Info</p>
+                <button class="delete" aria-label="close" data-dismiss="modal" onclick="cancle_change_info()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">New Username</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="text" id="name" placeholder="Admin">
+                        <span class="icon is-small is-left">
+                            <img src="./src/img/user.png">
+                        </span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">New Password</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="password" id="password" placeholder="Password">
+                        <span class="icon is-small is-left">
+                            <img src="./src/img/password.png">
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" onclick="submit_info()">Submit</button>
+                <button class="button" data-dismiss="modal" onclick="cancle_change_info()">Cancel</button>
+            </footer>
+        </div>
+    </div>
+    <div class="modal" id="change_password">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Change Lock Password</p>
+                <button class="delete" aria-label="close" data-dismiss="modal" onclick="cancle_change_pass()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">New Lock Password</label>
+                    <div class="control has-icons-left has-icons-right">
+                        <input class="input" type="password" id="lock_password" placeholder="Password">
+                        <span class="icon is-small is-left">
+                            <img src="./src/img/password.png">
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-success" onclick="submit_new_pass()">Submit</button>
+                <button class="button" data-dismiss="modal" onclick="cancle_change_pass()">Cancel</button>
+            </footer>
+        </div>
+    </div>
+    <div class="modal" id="view_status">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">The Status Of Lock</p>
+                <button class="delete" aria-label="close" data-dismiss="modal" onclick="close_status()"></button>
+            </header>
+            <section class="modal-card-body">
+                <p id="status" style="font-size: 2em;"></p>
+            </section>
+        </div>
+    </div>
+    <div class="modal" id="view_log">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Log</p>
+                <button class="delete" aria-label="close" data-dismiss="modal" onclick="close_log()"></button>
+            </header>
+            <section class="modal-card-body">
+                <p id="log" style="font-size: 1.2em;"></p>
+            </section>
+        </div>
+    </div>
 </body>
 
 </html>
