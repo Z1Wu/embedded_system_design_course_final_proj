@@ -9,144 +9,11 @@ Project File Date:  12/22/2018
 <h2>Output:</h2>
 Build target 'Target 1'
 compiling main.c...
-MAIN.C(55): error C141: syntax error near 'P16'
-MAIN.C(57): error C141: syntax error near 'PrintString1'
-MAIN.C(58): error C141: syntax error near '}'
-MAIN.C(63): error C141: syntax error near 'P16'
-MAIN.C(64): error C141: syntax error near '}'
-MAIN.C(69): error C141: syntax error near '}'
-MAIN.C(71): error C141: syntax error near '}'
-MAIN.C(76): error C141: syntax error near 'P16'
-MAIN.C(77): error C141: syntax error near '}'
-MAIN.C(118): error C141: syntax error near '}'
-MAIN.C(162): error C141: syntax error near 'state'
-MAIN.C(163): error C141: syntax error near '}'
-Target not created
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(58): error C141: syntax error near '}'
-MAIN.C(69): error C141: syntax error near '}'
-MAIN.C(71): error C141: syntax error near '}'
-MAIN.C(118): error C141: syntax error near '}'
-MAIN.C(162): error C141: syntax error near 'state'
-MAIN.C(163): error C141: syntax error near '}'
-Target not created
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(162): error C141: syntax error near 'state'
-Target not created
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1916
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1916
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1922
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1920
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1876
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(116): error C141: syntax error near 'alert'
-MAIN.C(117): error C141: syntax error near '}'
-Target not created
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(116): error C141: syntax error near 'alert'
-Target not created
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1922
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1922
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1927
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1927
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_PRINTU8?MAIN
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RESET_LED?MAIN
-Program Size: data=109.2 xdata=0 code=1937
-creating hex file from "interrupt_communication"...
-"interrupt_communication" - 0 Error(s), 2 Warning(s).
-Build target 'Target 1'
-compiling main.c...
-MAIN.C(69): error C141: syntax error near '}'
-MAIN.C(84): error C141: syntax error near 'initPassword'
+SERIAL.H(160): warning C206: 'Timer0_1T': missing function-prototype
+SERIAL.H(161): warning C206: 'Timer0_AsTimer': missing function-prototype
+SERIAL.H(162): warning C206: 'Timer0_16bitAutoReload': missing function-prototype
+SERIAL.H(163): warning C206: 'Timer0_Load': missing function-prototype
+SERIAL.H(163): error C267: 'Timer0_Load': requires ANSI-style prototype
 Target not created
 Build target 'Target 1'
 compiling main.c...
@@ -156,5 +23,35 @@ linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?RESET_LED?MAIN
 Program Size: data=109.2 xdata=0 code=1942
+creating hex file from "interrupt_communication"...
+"interrupt_communication" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PRINTU8?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RESET_LED?MAIN
+Program Size: data=109.2 xdata=0 code=1942
+creating hex file from "interrupt_communication"...
+"interrupt_communication" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PRINTU8?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RESET_LED?MAIN
+Program Size: data=109.2 xdata=0 code=1942
+creating hex file from "interrupt_communication"...
+"interrupt_communication" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_PRINTU8?MAIN
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RESET_LED?MAIN
+Program Size: data=109.2 xdata=0 code=1955
 creating hex file from "interrupt_communication"...
 "interrupt_communication" - 0 Error(s), 2 Warning(s).
