@@ -3,6 +3,7 @@ import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from tinydb import TinyDB, Query
 from datetime import datetime
+import json
 
 import logging
 import threading
@@ -34,17 +35,28 @@ STATE_DOOR_CLOSE = 'DOOR CLOSE'
 STATE_DOOR_ALERT = 'DOOR ALERT'
 
 PASSWORD = "12345678"
+ADMIN_USER = "123456"
+ADMIN_PASSWORD = "123456"
+
+# global connection
 connection = None
 
 def get_current_time():
     return str(datetime.now())
 
 def insert_open_record(res):
-    db.insert({'event' : "open", 'res' : res, 'time' : get_current_time()})
+    db.insert({'type' : 'log', 'event' : "open", 'res' : res, 'time' : get_current_time()})
 
 def insert_alert_record():
     # 记录开门的消息
-    db.insert({'event' : "alert", 'res' : "null", 'time' : get_current_time()})
+    db.insert({'type' : 'log', 'event' : "alert", 'res' : "null", 'time' : get_current_time()})
+
+def changeLockPassword(new_password):
+    PASSWORD = new_password
+
+def changeAdminInfo(new_user, new_password):
+    ADMIN_PASSWORD = new_password
+    ADMIN_USER = new_user
 
 # share variable, will be altered by the receiver thread.
 state = STATE_WAITTING_INPUT
@@ -99,9 +111,16 @@ class MyHandler(BaseHTTPRequestHandler):
             content = self.handle_static_file(path, is_binary)
             response = self.handle_http(200, content, mime_type)
             self.wfile.write(response)
+        elif path == '/get_lock_status':
+            self.wfile.write(self.handle_http(200, state, "text/plain"))
+        elif path == '/get_log':
+            
 
     def do_POST(self):
         print("receive post request from browser", self.path)
+        
+        content_len = int(self.headers.get('content-length', 0))
+        content = self.rfile.read(content_len)
         if(self.path == "/open-door"):
             # 输入密码，打开门
             content_len = int(self.headers.get('content-length', 0))
@@ -122,8 +141,37 @@ class MyHandler(BaseHTTPRequestHandler):
             # 把结果返回给浏览器
             self.wfile.write(self.handle_http(200, str(data), "text/html"))
         elif self.path == "/login":
-            pass
-        elif self.path == "/"
+            print(content)
+            # get the target
+            post_body = str(content)
+            try:
+                user, password = self.extractInfoFromPB(post_body)
+                print(user, password)
+            except:
+                print("invalid post-body", post_body)
+
+            data = None
+            if user != ADMIN_USER or password != ADMIN_PASSWORD:
+                data = 2
+            else:
+                data = 0
+            self.wfile.write(self.handle_http(200, str(data), "text/plain"))
+        elif self.path == "/change_info":
+            print(content)
+            new_user, new_password = self.extractInfoFromPB(post_body)
+            changeAdminInfo(new_user, new_password)
+            self.wfile.write(self.handle_http(200, "true", "text/plain"))
+        elif self.path == "/change_lock_password":
+            print(content)
+            changeLockPassword(str(content))
+            self.wfile.write(self.handle_http(200, "true", "text/plain"))
+
+    def extractInfoFromPB(self, raw):
+        user, password = raw.split("&")
+        user = user[user.index('=') + 1 : ]
+        password = password[password.index('=') + 1: -1]
+        return user, password
+
 
     def handle_http(self, status_code, content, type = 'text/html'):
         self.send_response(status_code)

@@ -104,10 +104,6 @@ stc 单片机上有以下5个状态
     时间:(事件发生时间)
 }
 
-{
-    
-}
-
 
 ## API design
 
@@ -128,10 +124,10 @@ stc 单片机上有以下5个状态
         - string: result(true => 密码正确 / false => 密码错误)
 
 
-- GET: /record : 获取本地数据库的状态，管理者页面
+- GET: / : 获取本地数据库的状态，管理者页面
     
     - request: 
 
-    - response : 渲染
+    - response : 
 
         - log
