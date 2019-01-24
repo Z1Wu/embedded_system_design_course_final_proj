@@ -207,7 +207,7 @@ void main(void) {
                 if(remoteKeyCode == 't') {
                     state = STATE_VALIAD;
                 } else if (remoteKeyCode == 'f') {
-                    state = STATE_INVALIAD;                    
+                    state = STATE_INVALIAD;          
                 } else if (remoteKeyCode == 'o') {
                     // 提供远程开门的服务
                     openDoorWithoutAlert();

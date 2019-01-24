@@ -55,3 +55,23 @@ linking...
 Program Size: data=109.2 xdata=0 code=1955
 creating hex file from "interrupt_communication"...
 "interrupt_communication" - 0 Error(s), 2 Warning(s).
+Build target 'Target 1'
+compiling main.c...
+SERIAL.H(25): error C141: syntax error near 'u8'
+SERIAL.H(25): error C231: 'u8': redefinition
+Target not created
+Build target 'Target 1'
+compiling main.c...
+SERIAL.H(51): warning C206: 'PrintU8': missing function-prototype
+SERIAL.H(51): error C267: 'PrintU8': requires ANSI-style prototype
+SERIAL.H(56): error C231: 'PrintU8': redefinition
+SERIAL.H(60): error C231: 'PrintU8': redefinition
+Target not created
+Build target 'Target 1'
+compiling main.c...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?RESET_LED?MAIN
+Program Size: data=110.2 xdata=0 code=1962
+creating hex file from "interrupt_communication"...
+"interrupt_communication" - 0 Error(s), 1 Warning(s).

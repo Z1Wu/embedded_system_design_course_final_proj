@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/24/2019 12:23:54 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -62,7 +62,7 @@ line level    source
   53          //      rtc[3] = minute / 10;
   54          //      rtc[4] = minute % 10;
   55          //      rtc[5] = DIS_;
-C51 COMPILER V9.01   MAIN                                                                  01/24/2019 12:23:54 PAGE 2   
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 2   
 
   56          //      rtc[6] = second / 10;
   57          //      rtc[7] = second % 10;
@@ -126,7 +126,7 @@ line level    source
  115   1          state = STATE_INPUTTING;
  116   1          // openDoorWithoutAlert();
  117   1          while(1)
-C51 COMPILER V9.01   MAIN                                                                  01/24/2019 12:23:54 PAGE 3   
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 3   
 
  118   1          {
  119   2              // 检测是否收到数据
@@ -190,7 +190,7 @@ line level    source
  177   3                  if(KeyCode != 0)
  178   3                  {
  179   4                      if(state == STATE_INPUTTING && KeyCode >= 17 &&  KeyCode <= 26)              
-C51 COMPILER V9.01   MAIN                                                                  01/24/2019 12:23:54 PAGE 4   
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 4   
 
  180   4                      {
  181   5                          password[curPos++] = KeyCode % 17;
@@ -222,7 +222,7 @@ line level    source
  207   4                      if(remoteKeyCode == 't') {
  208   5                          state = STATE_VALIAD;
  209   5                      } else if (remoteKeyCode == 'f') {
- 210   5                          state = STATE_INVALIAD;                    
+ 210   5                          state = STATE_INVALIAD;          
  211   5                      } else if (remoteKeyCode == 'o') {
  212   5                          // 提供远程开门的服务
  213   5                          openDoorWithoutAlert();
@@ -236,11 +236,11 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1506    ----
+   CODE SIZE        =   1510    ----
    CONSTANT SIZE    =     94    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     50      32
+   DATA SIZE        =     51      32
    IDATA SIZE       =     32    ----
    BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.

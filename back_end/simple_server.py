@@ -109,17 +109,21 @@ class MyHandler(BaseHTTPRequestHandler):
             print("post data : ", pw)
             # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
             data = None
-            pw_str = pw.decode(encoding = 'utf-8')
+            pw_str = pw.decode()
             if pw_str == PASSWORD: 
                 data = b't'
+                # 如果输入结果正确，打开门
+                SendDataToWifiModule(REMOTE_HOST, REMOTE_HOST_PORT, b'o').start()
             elif pw_str != PASSWORD:
                 data = b'f'
             else:
                 pass
             
-            SendDataToWifiModule(REMOTE_HOST, REMOTE_HOST_PORT, data).start()
             # 把结果返回给浏览器
             self.wfile.write(self.handle_http(200, str(data), "text/html"))
+        elif self.path == "/login":
+            pass
+        elif self.path == "/"
 
     def handle_http(self, status_code, content, type = 'text/html'):
         self.send_response(status_code)
@@ -144,9 +148,10 @@ class SendDataToWifiModule(threading.Thread):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((self.host_name, self.port_num))
         # send data to wifi module
+        msg = sock.recv(1024) 
         sock.send(self.data)
         sock.close()
-        print("done send data to wifi module")
+        print("done send data to wifi module: " + str(msg))
         
 
 # another handle the input from wifi module
@@ -186,7 +191,6 @@ thread_recv = threading.Thread(target=receiver)
 thread_recv.setDaemon(True)
 thread_recv.start()
 
-
 if __name__ == '__main__':
     server_class = HTTPServer
     httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
@@ -194,6 +198,7 @@ if __name__ == '__main__':
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
-        pass
-    httpd.server_close()
-    print(time.asctime(), 'Server Stops - %s:%s' % (HOST_NAME, PORT_NUMBER))
+        print("press control + c")
+        httpd.server_close()
+        print(time.asctime(), 'Server Stops - %s:%s' % (HOST_NAME, PORT_NUMBER))
+    
