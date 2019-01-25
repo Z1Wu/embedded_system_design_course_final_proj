@@ -26,9 +26,8 @@ function submit_info(){
     user.name = $("#name").val();
     user.password = $("#password").val();
     $.post("/change_info",user,function(data){
-        if(data=="true"){
+        if(data){
             $("#change_info").css("display","none");
-            cancle_change_info();
             alert("Change Success!")
         }
         else{
@@ -56,7 +55,6 @@ function submit_new_pass(){
         $.post("/change_lock_password",new_lock_password,function(data){
             if(data=="true"){
                 $("#change_password").css("display","none");
-                cancle_change_pass();
                 alert("Change Success!")
             }
             else{

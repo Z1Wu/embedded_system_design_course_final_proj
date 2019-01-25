@@ -28,7 +28,6 @@ function submit_info(){
     $.post("/change_info",user,function(data){
         if(data=="true"){
             $("#change_info").css("display","none");
-            cancle_change_info();
             alert("Change Success!")
         }
         else{
