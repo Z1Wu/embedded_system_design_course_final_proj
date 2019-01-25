@@ -1,7 +1,7 @@
 import time
 import re
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from tinydb import TinyDB, Query
+#from tinydb import TinyDB, Query
 from datetime import datetime
 import json
 
@@ -20,7 +20,7 @@ REMOTE_HOST_PORT = 8080
 # REMOTE_HOST_PORT = 9999
 
 # create a db module
-db = TinyDB("../db.json")
+#db = TinyDB("db.json")
 
 # todo:regex expression to match static files
 # static_file = 
@@ -52,12 +52,9 @@ def insert_alert_record():
     db.insert({'type' : 'log', 'event' : "alert", 'res' : "null", 'time' : get_current_time()})
 
 def changeLockPassword(new_password):
-    global PASSWORD
     PASSWORD = new_password
 
 def changeAdminInfo(new_user, new_password):
-    global ADMIN_PASSWORD
-    global ADMIN_USER
     ADMIN_PASSWORD = new_password
     ADMIN_USER = new_user
 
@@ -116,9 +113,8 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(response)
         elif path == '/get_lock_status':
             self.wfile.write(self.handle_http(200, state, "text/plain"))
-        elif path == '/get_log':
-            logs = str(db.table("_default").all())
-            self.wfile.write(self.handle_http(200, logs, "text/plain"))
+        #elif path == '/get_log':
+            
 
     def do_POST(self):
         print("receive post request from browser", self.path)
@@ -162,7 +158,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.handle_http(200, str(data), "text/plain"))
         elif self.path == "/change_info":
             print(content)
-            new_user, new_password = self.extractInfoFromPB(str(content))
+            new_user, new_password = self.extractInfoFromPB(post_body)
             changeAdminInfo(new_user, new_password)
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
         elif self.path == "/change_lock_password":

@@ -52,12 +52,9 @@ def insert_alert_record():
     db.insert({'type' : 'log', 'event' : "alert", 'res' : "null", 'time' : get_current_time()})
 
 def changeLockPassword(new_password):
-    global PASSWORD
     PASSWORD = new_password
 
 def changeAdminInfo(new_user, new_password):
-    global ADMIN_PASSWORD
-    global ADMIN_USER
     ADMIN_PASSWORD = new_password
     ADMIN_USER = new_user
 

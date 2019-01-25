@@ -56,8 +56,6 @@ def changeLockPassword(new_password):
     PASSWORD = new_password
 
 def changeAdminInfo(new_user, new_password):
-    global ADMIN_PASSWORD
-    global ADMIN_USER
     ADMIN_PASSWORD = new_password
     ADMIN_USER = new_user
 

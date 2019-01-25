@@ -34,9 +34,9 @@ STATE_DOOR_OPEN = 'DOOR OPEN'
 STATE_DOOR_CLOSE = 'DOOR CLOSE'
 STATE_DOOR_ALERT = 'DOOR ALERT'
 
-PASSWORD = "12345678"
-ADMIN_USER = "123456"
-ADMIN_PASSWORD = "123456"
+global PASSWORD = "12345678"
+global ADMIN_USER = "123456"
+global ADMIN_PASSWORD = "123456"
 
 # global connection
 connection = None
@@ -52,12 +52,9 @@ def insert_alert_record():
     db.insert({'type' : 'log', 'event' : "alert", 'res' : "null", 'time' : get_current_time()})
 
 def changeLockPassword(new_password):
-    global PASSWORD
     PASSWORD = new_password
 
 def changeAdminInfo(new_user, new_password):
-    global ADMIN_PASSWORD
-    global ADMIN_USER
     ADMIN_PASSWORD = new_password
     ADMIN_USER = new_user
 

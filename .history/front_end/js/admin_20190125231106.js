@@ -27,11 +27,9 @@ function submit_info(){
     user.password = $("#password").val();
     $.post("/change_info",user,function(data){
         if(data){
-            $("#change_info").css("display","none");
             alert("Change Success!")
         }
         else{
-            $("#change_info").css("display","none");
             alert("Change Fail!")
         }
     })
@@ -54,11 +52,9 @@ function submit_new_pass(){
     if(re.test(new_lock_password)){
         $.post("/change_lock_password",new_lock_password,function(data){
             if(data){
-                $("#change_password").css("display","none");
                 alert("Change Success!")
             }
             else{
-                $("#change_password").css("display","none");
                 alert("Change Fail!")
             }
         })
@@ -76,7 +72,7 @@ function cancle_change_pass(){
 function get_status(){
     $("#overview").removeClass("is-active");
     $("#get_status").addClass("is-active");
-    $.get("/get_lock_status",function(data,status){
+    $get("/get_lock_status",function(data,status){
         $("#status").html(data);
     })
 }
@@ -89,7 +85,7 @@ function close_status(){
 function get_log(){
     $("#overview").removeClass("is-active");
     $("#get_log").addClass("is-active");
-    $.get("/get_log",function(data,status){
+    $get("/get_log",function(data){
         $("#log").html(data);
     })
 }

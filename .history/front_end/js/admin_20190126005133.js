@@ -54,11 +54,9 @@ function submit_new_pass(){
     if(re.test(new_lock_password)){
         $.post("/change_lock_password",new_lock_password,function(data){
             if(data){
-                $("#change_password").css("display","none");
                 alert("Change Success!")
             }
             else{
-                $("#change_password").css("display","none");
                 alert("Change Fail!")
             }
         })
