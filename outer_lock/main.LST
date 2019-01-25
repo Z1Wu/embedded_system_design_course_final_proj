@@ -1,4 +1,4 @@
-C51 COMPILER V9.01   MAIN                                                                  01/21/2019 23:22:31 PAGE 1   
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
@@ -36,183 +36,211 @@ line level    source
   27          u8 state = 0;
   28          u8 password[8];
   29          
-  30          // 记录门打开的时间
-  31          u8 door_open_time = 0;
-  32          
-  33          void reset_led(){
-  34   1          u8 i;
-  35   1          for(i=0;i<8;i++){
-  36   2              LED8[i] = DIS_;
-  37   2          }
-  38   1      }
-  39          
-  40          void DisplayInfo(u8* info) {
-  41   1          u8 i;
-  42   1          for(i = 0; i < 8; i++) {
-  43   2              LED8[i] = info[i];
-  44   2          }
-  45   1      }
-  46          
-  47          void initPassword(){
-  48   1          u8 i;
-  49   1          curPos = 0;
-  50   1          for(i = 0; i < 8; i++) {
-  51   2              password[i] = DIS_;
-  52   2          }
-  53   1          password[8] = 0;
-  54   1      }
-  55          
-C51 COMPILER V9.01   MAIN                                                                  01/21/2019 23:22:31 PAGE 2   
+  30          // RTC related
+  31          // u8   hour,minute,second;     //RTC变量
+  32          // u8 rtc[8];
+  33          
+  34          // 记录门打开的时间
+  35          u8 door_open_time = 0;
+  36          
+  37          void reset_led(){
+  38   1          u8 i;
+  39   1          for(i=0;i<8;i++){
+  40   2              LED8[i] = DIS_;
+  41   2          }
+  42   1      }
+  43          
+  44          // void updateRTC(){
+  45              
+  46          //     if(hour >= 10) {
+  47          //         rtc[0] = hour / 10;  
+  48          //     } else {
+  49          //         rtc[0] = DIS_BLACK;
+  50          //     }
+  51          //      rtc[1] = hour % 10;
+  52          //      rtc[2] = DIS_;
+  53          //      rtc[3] = minute / 10;
+  54          //      rtc[4] = minute % 10;
+  55          //      rtc[5] = DIS_;
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 2   
 
-  56          void alert() {
-  57   1          // 点亮LED
-  58   1          P47 = 0;
-  59   1          P46 = 0;
-  60   1          // 发送报警信息到服务器
-  61   1          PrintString1("aaaaaaaa");
-  62   1      }
-  63          
-  64          void openDoorWithoutAlert() {
-  65   1          // 取消报警, 进入正常的看门状态显示
-  66   1          P47 = 1;
-  67   1          P46 = 0;
-  68   1          state = STATE_DOOR_OPEN;
-  69   1      }
-  70          
-  71          void pollState() {
-  72   1          if(state == STATE_DOOR_OPEN) {
-  73   2              PrintString1("oooooooo");
-  74   2          } else {
-  75   2              PrintString1("cccccccc");       
-  76   2          }
-  77   1      }
-  78          
-  79          void cloesDoor() {
-  80   1          // 关门，所有 led 灯关闭
-  81   1          P47 = 1;
-  82   1          P46 = 1;
-  83   1          state = STATE_INPUTTING;
-  84   1          initPassword();
-  85   1      }
-  86          
-  87          
-  88          void main(void) {
-  89   1      
-  90   1          u8 remoteKeyCode = 0;
-  91   1          serial_init();
-  92   1          key_init();
-  93   1              initPassword();
-  94   1          state = STATE_INPUTTING;
-  95   1          // openDoorWithoutAlert();
-  96   1          while(1)
-  97   1          {
-  98   2              // 检测是否收到数据
-  99   2              if((TX1_Cnt != RX1_Cnt) && (!B_TX1_Busy))
- 100   2              {
- 101   3                  // 收到数据，并将数据中的键码赋给变量remoteKeyCode
- 102   3                  remoteKeyCode = RX1_Buffer[TX1_Cnt];
- 103   3                  if(++TX1_Cnt >= UART1_BUF_LENGTH)   TX1_Cnt = 0;
- 104   3              }
- 105   2      
- 106   2              // 受时间控制的功能
- 107   2              if(B_1ms)
- 108   2              {
- 109   3                  B_1ms = 0;
- 110   3      
- 111   3                  // 记录当前门锁的状态，发送到服务器
- 112   3                  if(msecond >= POLL_INTERVAL) {
- 113   4                      msecond = 0;
- 114   4                      pollState();
- 115   4                  }
- 116   3      
- 117   3                  if(state == STATE_DOOR_OPEN && msecond % ALERT_INTERVAL == 0) {
-C51 COMPILER V9.01   MAIN                                                                  01/21/2019 23:22:31 PAGE 3   
+  56          //      rtc[6] = second / 10;
+  57          //      rtc[7] = second % 10;
+  58          // }
+  59          
+  60          void DisplayInfo(u8* info) {
+  61   1          u8 i;
+  62   1          for(i = 0; i < 8; i++) {
+  63   2              LED8[i] = info[i];
+  64   2          }
+  65   1      
+  66   1      }
+  67          
+  68          void initPassword(){
+  69   1          u8 i;
+  70   1          curPos = 0;
+  71   1          for(i = 0; i < 8; i++) {
+  72   2              password[i] = DIS_;
+  73   2          }
+  74   1          password[8] = 0;
+  75   1      }
+  76          
+  77          void alert() {
+  78   1          // 点亮LED
+  79   1          P47 = 0;
+  80   1          P46 = 0;
+  81   1          // 发送报警信息到服务器
+  82   1          PrintString1("aaaaaaaa");
+  83   1      }
+  84          
+  85          void openDoorWithoutAlert() {
+  86   1          // 取消报警, 进入正常的看门状态显示
+  87   1          P47 = 1;
+  88   1          P46 = 0;
+  89   1          state = STATE_DOOR_OPEN;
+  90   1      }
+  91          
+  92          void pollState() {
+  93   1          if(state == STATE_DOOR_OPEN) {
+  94   2              PrintString1("oooooooo");
+  95   2          } else {
+  96   2              PrintString1("cccccccc");       
+  97   2          }
+  98   1      }
+  99          
+ 100          void cloesDoor() {
+ 101   1          // 关门，所有 led 灯关闭
+ 102   1          P47 = 1;
+ 103   1          P46 = 1;
+ 104   1          state = STATE_INPUTTING;
+ 105   1          initPassword();
+ 106   1      }
+ 107          
+ 108          
+ 109          void main(void) {
+ 110   1      
+ 111   1          u8 remoteKeyCode = 0;
+ 112   1          serial_init();
+ 113   1          key_init();
+ 114   1              initPassword();
+ 115   1          state = STATE_INPUTTING;
+ 116   1          // openDoorWithoutAlert();
+ 117   1          while(1)
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 3   
 
- 118   4                      if(door_open_time > 5) {
- 119   5                          door_open_time = 0;
- 120   5                          alert();
- 121   5                      }
- 122   4                      door_open_time ++;
- 123   4                  }
- 124   3      
- 125   3                  if(++msecond % 200 == 0)
- 126   3                  {
- 127   4                      // 根据状态显示特定的数码管
- 128   4                      switch(state) {
- 129   5                          case STATE_INPUTTING:
- 130   5                              DisplayInfo(password);
- 131   5                              break;
- 132   5                          case STATE_VALIAD:
- 133   5                              DisplayInfo(info_true);
- 134   5                              break;
- 135   5                          case STATE_INVALIAD:
- 136   5                              DisplayInfo(info_false);                
- 137   5                              break;
- 138   5                          default: break;
- 139   5                      }
- 140   4                  }
- 141   3      
- 142   3                  
- 143   3                  if(++cnt50ms >= 50)
- 144   3                  {
- 145   4                      cnt50ms = 0;
- 146   4                      IO_KeyScan();
- 147   4                  }
- 148   3      
- 149   3                  if(KeyCode != 0)
- 150   3                  {
- 151   4                      if(state == STATE_INPUTTING && KeyCode >= 17 &&  KeyCode <= 26)              
- 152   4                      {
- 153   5                          password[curPos++] = KeyCode % 17;
- 154   5                      } else if(KeyCode == INPUT_CONFIRM_KEY_CODE) {
- 155   5                          if(curPos == 8) {
- 156   6                                                      u8 i;
- 157   6                                                      u8 tmp[8];
- 158   6                                                      for(i = 0; i < 8; i++) {
- 159   7                                                              tmp[i] = password[i] + 48;                                                      
- 160   7                                                      }
- 161   6                              PrintString1(tmp);
- 162   6                          }
- 163   5                      } else if(state == STATE_INVALIAD && KeyCode == REINPUT_KEY_CODE) {
- 164   5                          state = STATE_INPUTTING;
- 165   5                          initPassword();
- 166   5                      } else if(state == STATE_DOOR_OPEN && KeyCode == CLOSE_DOOR_KEY_CODE) {
- 167   5                          // 如果有报警则取消报警
- 168   5                          cloesDoor();
- 169   5                      } else if(state == STATE_VALIAD && KeyCode == OPEN_DOOR_KEY_CODE) {
- 170   5                          // 直接开门
- 171   5                          openDoorWithoutAlert();
- 172   5                      }
- 173   4      
- 174   4                      KeyCode = 0;
+ 118   1          {
+ 119   2              // 检测是否收到数据
+ 120   2              if((TX1_Cnt != RX1_Cnt) && (!B_TX1_Busy))
+ 121   2              {
+ 122   3                  // 收到数据，并将数据中的键码赋给变量remoteKeyCode
+ 123   3                  remoteKeyCode = RX1_Buffer[TX1_Cnt];
+ 124   3                  if(++TX1_Cnt >= UART1_BUF_LENGTH)   TX1_Cnt = 0;
+ 125   3              }
+ 126   2      
+ 127   2              // 受时间控制的功能
+ 128   2              if(B_1ms)
+ 129   2              {
+ 130   3                  B_1ms = 0;
+ 131   3      
+ 132   3                  // 记录当前门锁的状态，发送到服务器
+ 133   3                  if(msecond >= POLL_INTERVAL) {
+ 134   4                      msecond = 0;
+ 135   4                      pollState();
+ 136   4                  }
+ 137   3      
+ 138   3                  if(state == STATE_DOOR_OPEN && msecond % ALERT_INTERVAL == 0) {
+ 139   4                      if(door_open_time > 5) {
+ 140   5                          door_open_time = 0;
+ 141   5                          alert();
+ 142   5                      }
+ 143   4                      door_open_time ++;
+ 144   4                  }
+ 145   3      
+ 146   3                  if(++msecond % 200 == 0)
+ 147   3                  {
+ 148   4                      // 根据状态显示特定的数码管
+ 149   4                      switch(state) {
+ 150   5                          case STATE_INPUTTING:
+ 151   5                              // ReadRTC();
+ 152   5                              // DisplayRTC();
+ 153   5                              if(password[0] == DIS_) {
+ 154   6                                  ReadRTC();
+ 155   6                                  DisplayRTC();
+ 156   6                              } else {
+ 157   6                                  DisplayInfo(password);
+ 158   6                              }
+ 159   5                              break;
+ 160   5                          case STATE_VALIAD:
+ 161   5                              DisplayInfo(info_true);
+ 162   5                              break;
+ 163   5                          case STATE_INVALIAD:
+ 164   5                              DisplayInfo(info_false);                
+ 165   5                              break;
+ 166   5                          default: break;
+ 167   5                      }
+ 168   4                  }
+ 169   3      
+ 170   3                  
+ 171   3                  if(++cnt50ms >= 50)
+ 172   3                  {
+ 173   4                      cnt50ms = 0;
+ 174   4                      IO_KeyScan();
  175   4                  }
  176   3      
- 177   3                  if(remoteKeyCode != 0) {
- 178   4      
- 179   4                      if(remoteKeyCode == 't') {
-C51 COMPILER V9.01   MAIN                                                                  01/21/2019 23:22:31 PAGE 4   
+ 177   3                  if(KeyCode != 0)
+ 178   3                  {
+ 179   4                      if(state == STATE_INPUTTING && KeyCode >= 17 &&  KeyCode <= 26)              
+C51 COMPILER V9.01   MAIN                                                                  01/24/2019 22:14:08 PAGE 4   
 
- 180   5                          state = STATE_VALIAD;
- 181   5                      } else if (remoteKeyCode == 'f') {
- 182   5                          state = STATE_INVALIAD;                    
- 183   5                      } else if (remoteKeyCode == 'o') {
- 184   5                          // 提供远程开门的服务
- 185   5                          openDoorWithoutAlert();
- 186   5                      }
- 187   4      
- 188   4                      remoteKeyCode = 0;
- 189   4                  }
- 190   3              }
- 191   2          }
- 192   1      }
+ 180   4                      {
+ 181   5                          password[curPos++] = KeyCode % 17;
+ 182   5                      } else if(KeyCode == INPUT_CONFIRM_KEY_CODE) {
+ 183   5                          if(curPos == 8) {
+ 184   6                                                      u8 i;
+ 185   6                                                      u8 tmp[8];
+ 186   6                                                      for(i = 0; i < 8; i++) {
+ 187   7                                                              tmp[i] = password[i] + 48;                                                      
+ 188   7                                                      }
+ 189   6                              PrintString1(tmp);
+ 190   6                          }
+ 191   5                      } else if(state == STATE_INVALIAD && KeyCode == REINPUT_KEY_CODE) {
+ 192   5                          state = STATE_INPUTTING;
+ 193   5                          initPassword();
+ 194   5                      } else if(state == STATE_DOOR_OPEN && KeyCode == CLOSE_DOOR_KEY_CODE) {
+ 195   5                          // 如果有报警则取消报警
+ 196   5                          cloesDoor();
+ 197   5                      } else if(state == STATE_VALIAD && KeyCode == OPEN_DOOR_KEY_CODE) {
+ 198   5                          // 直接开门
+ 199   5                          openDoorWithoutAlert();
+ 200   5                      }
+ 201   4      
+ 202   4                      KeyCode = 0;
+ 203   4                  }
+ 204   3      
+ 205   3                  if(remoteKeyCode != 0) {
+ 206   4      
+ 207   4                      if(remoteKeyCode == 't') {
+ 208   5                          state = STATE_VALIAD;
+ 209   5                      } else if (remoteKeyCode == 'f') {
+ 210   5                          state = STATE_INVALIAD;          
+ 211   5                      } else if (remoteKeyCode == 'o') {
+ 212   5                          // 提供远程开门的服务
+ 213   5                          openDoorWithoutAlert();
+ 214   5                      }
+ 215   4      
+ 216   4                      remoteKeyCode = 0;
+ 217   4                  }
+ 218   3              }
+ 219   2          }
+ 220   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1493    ----
+   CODE SIZE        =   1510    ----
    CONSTANT SIZE    =     94    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     50      32
+   DATA SIZE        =     51      32
    IDATA SIZE       =     32    ----
    BIT SIZE         =      2    ----
 END OF MODULE INFORMATION.

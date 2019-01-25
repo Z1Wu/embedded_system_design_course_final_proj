@@ -118,6 +118,23 @@
         <tIfile></tIfile>
         <pMon></pMon>
       </DebugOpt>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>107</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+      </Breakpoint>
       <DebugFlag>
         <trace>0</trace>
         <periodic>1</periodic>
@@ -174,10 +191,10 @@
       <FileType>1</FileType>
       <tvExp>1</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>16</ColumnNumber>
+      <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>73</TopLine>
-      <CurrentLine>89</CurrentLine>
+      <TopLine>60</TopLine>
+      <CurrentLine>83</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\main.c</PathWithFileName>
       <FilenameWithoutPath>main.c</FilenameWithoutPath>
@@ -185,7 +202,7 @@
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>C:\Users\z1wu1\Desktop\es_proj\final_proj\outer_side\SERIAL.H</PathWithFilename>
+    <PathWithFilename>C:\Users\z1wu1\Desktop\es_proj\final_proj\outer_lock\SERIAL.H</PathWithFilename>
     <TopLine>31</TopLine>
     <CurrentLine>40</CurrentLine>
     <Constant>0</Constant>
@@ -211,7 +228,7 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>C:\Users\z1wu1\Desktop\es_proj\final_proj\outer_side\KEY.H</PathWithFilename>
+    <PathWithFilename>C:\Users\z1wu1\Desktop\es_proj\final_proj\outer_lock\KEY.H</PathWithFilename>
     <TopLine>96</TopLine>
     <CurrentLine>96</CurrentLine>
     <Constant>0</Constant>
@@ -1613,9 +1630,9 @@
         </Doc>
         <Doc>
           <Name>.\main.c</Name>
-          <ColumnNumber>16</ColumnNumber>
-          <TopLine>73</TopLine>
-          <CurrentLine>89</CurrentLine>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>60</TopLine>
+          <CurrentLine>83</CurrentLine>
         </Doc>
         <Doc>
           <Name>KEY.H</Name>

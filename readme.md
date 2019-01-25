@@ -5,8 +5,7 @@
 进展：https://docs.qq.com/doc/DWWpPYVJZQWJOZkFi
 
 
-## 基本构造
-
+## 需求
 
 
 ## 基本效果
@@ -15,7 +14,7 @@ stc 单片机上有以下5个状态
 
 - 等待密码输入
     
-    - 7段管出现`--------`代表等待输入
+    - 出现当前时间(hh-mm-ss)的时候为等待输入状态
 
 - 密码输入正确
 
@@ -32,6 +31,15 @@ stc 单片机上有以下5个状态
 - 报警
 
     - 当门出于打开状态 `一定时间` 之后，会进入报警状态，此时 P46,P47 LED灯都处于报警状态
+
+单片机按键：
+
+// keycode 和 键盘按键之间的对应
+// 27 => A, 28 => B, 29 => C, 30 => D
+#define CLOSE_DOOR_KEY_CODE 30 
+#define OPEN_DOOR_KEY_CODE 29
+#define REINPUT_KEY_CODE 28
+#define INPUT_CONFIRM_KEY_CODE 27
 
 ## 连线方式
 
@@ -84,6 +92,19 @@ stc 单片机上有以下5个状态
 ### wifi 模块和后台服务器之间
 
 
+### 数据库部分
+
+处于轻量化考虑使用的是功能简单的数据库`Tinydb`，这是一个极为轻量化的 `nosql` 类型数据库 
+
+使用数据库来存储被访问的密码输入的记录以及门锁报警记录
+
+{
+    事件:(1 -> 密码输入), (2 -> 报警)
+    结果:(1 -> 密码输入结果)，(报警原因)
+    时间:(事件发生时间)
+}
+
+
 ## API design
 
 // todo 
@@ -96,18 +117,17 @@ stc 单片机上有以下5个状态
 - POST: /open-door : 发送开门请求到服务器
     
     - request: 
-        - parameter:
-            - string: password
+        - string: password
 
     - response:
         
         - string: result(true => 密码正确 / false => 密码错误)
 
 
-- GET: /record : 获取本地数据库的状态，管理者页面
+- GET: / : 获取本地数据库的状态，管理者页面
     
     - request: 
 
-    - response : 渲染
+    - response : 
 
         - log

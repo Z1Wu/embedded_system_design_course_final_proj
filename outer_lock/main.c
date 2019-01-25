@@ -27,6 +27,10 @@ u8 info_false[8] = {15, 15, 15, 15, 15, 15, 15, 15};
 u8 state = 0;
 u8 password[8];
 
+// RTC related
+// u8	hour,minute,second;	//RTC变量
+// u8 rtc[8];
+
 // 记录门打开的时间
 u8 door_open_time = 0;
 
@@ -37,11 +41,28 @@ void reset_led(){
     }
 }
 
+// void updateRTC(){
+    
+//     if(hour >= 10) {
+//         rtc[0] = hour / 10;	
+//     } else {
+//         rtc[0] = DIS_BLACK;
+//     }
+// 	rtc[1] = hour % 10;
+// 	rtc[2] = DIS_;
+// 	rtc[3] = minute / 10;
+// 	rtc[4] = minute % 10;
+// 	rtc[5] = DIS_;
+// 	rtc[6] = second / 10;
+// 	rtc[7] = second % 10;
+// }
+
 void DisplayInfo(u8* info) {
     u8 i;
     for(i = 0; i < 8; i++) {
         LED8[i] = info[i];
     }
+
 }
 
 void initPassword(){
@@ -127,7 +148,14 @@ void main(void) {
                 // 根据状态显示特定的数码管
                 switch(state) {
                     case STATE_INPUTTING:
-                        DisplayInfo(password);
+                        // ReadRTC();
+                        // DisplayRTC();
+                        if(password[0] == DIS_) {
+                            ReadRTC();
+                            DisplayRTC();
+                        } else {
+                            DisplayInfo(password);
+                        }
                         break;
                     case STATE_VALIAD:
                         DisplayInfo(info_true);
@@ -179,7 +207,7 @@ void main(void) {
                 if(remoteKeyCode == 't') {
                     state = STATE_VALIAD;
                 } else if (remoteKeyCode == 'f') {
-                    state = STATE_INVALIAD;                    
+                    state = STATE_INVALIAD;          
                 } else if (remoteKeyCode == 'o') {
                     // 提供远程开门的服务
                     openDoorWithoutAlert();
