@@ -20,7 +20,7 @@ REMOTE_HOST_PORT = 8080
 # REMOTE_HOST_PORT = 9999
 
 # create a db module
-db = TinyDB("../db.json")
+db = TinyDB("db.json")
 
 # todo:regex expression to match static files
 # static_file = 
@@ -52,12 +52,9 @@ def insert_alert_record():
     db.insert({'type' : 'log', 'event' : "alert", 'res' : "null", 'time' : get_current_time()})
 
 def changeLockPassword(new_password):
-    global PASSWORD
     PASSWORD = new_password
 
 def changeAdminInfo(new_user, new_password):
-    global ADMIN_PASSWORD
-    global ADMIN_USER
     ADMIN_PASSWORD = new_password
     ADMIN_USER = new_user
 
@@ -117,11 +114,8 @@ class MyHandler(BaseHTTPRequestHandler):
         elif path == '/get_lock_status':
             self.wfile.write(self.handle_http(200, state, "text/plain"))
         elif path == '/get_log':
-            log_list = db.table("_default").all()
-            logs=""
-            for log in log_list:
-                logs = logs+str(log)+"\n"
-            self.wfile.write(self.handle_http(200, logs, "text/plain"))
+            print(db.table("_default").count())
+            self.wfile.write(self.handle_http(200, "123", "text/plain"))
 
     def do_POST(self):
         print("receive post request from browser", self.path)
@@ -130,20 +124,23 @@ class MyHandler(BaseHTTPRequestHandler):
         content = self.rfile.read(content_len)
         if(self.path == "/open-door"):
             # 输入密码，打开门
-            pw = content.decode()
+            content_len = int(self.headers.get('content-length', 0))
+            pw = self.rfile.read(content_len)
             print("post data : ", pw)
             # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
-            if pw == PASSWORD: 
+            data = None
+            pw_str = pw.decode()
+            if pw_str == PASSWORD: 
+                data = b't'
                 # 如果输入结果正确，打开门
-                self.wfile.write(self.handle_http(200, "true", "text/plain"))
                 SendDataToWifiModule(REMOTE_HOST, REMOTE_HOST_PORT, b'o').start()
-            elif pw != PASSWORD:
-                self.wfile.write(self.handle_http(200, "false", "text/plain"))
+            elif pw_str != PASSWORD:
+                data = b'f'
             else:
                 pass
             
             # 把结果返回给浏览器
-            #self.wfile.write(self.handle_http(200, str(data), "text/html"))
+            self.wfile.write(self.handle_http(200, str(data), "text/html"))
         elif self.path == "/login":
             print(content)
             # get the target
@@ -162,12 +159,12 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.handle_http(200, str(data), "text/plain"))
         elif self.path == "/change_info":
             print(content)
-            new_user, new_password = self.extractInfoFromPB(str(content))
+            new_user, new_password = self.extractInfoFromPB(post_body)
             changeAdminInfo(new_user, new_password)
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
         elif self.path == "/change_lock_password":
             print(content)
-            changeLockPassword(str(content.decode()))
+            changeLockPassword(str(content))
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
 
     def extractInfoFromPB(self, raw):

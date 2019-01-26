@@ -26,13 +26,11 @@ function submit_info(){
     user.name = $("#name").val();
     user.password = $("#password").val();
     $.post("/change_info",user,function(data){
-        if(data=="true"){
-            $("#change_info").css("display","none");
-            cancle_change_info();
+        if(data){
             alert("Change Success!")
+            $("#change_info").css("display","none");
         }
         else{
-            $("#change_info").css("display","none");
             alert("Change Fail!")
         }
     })
@@ -54,13 +52,10 @@ function submit_new_pass(){
     var new_lock_password = $("#lock_password").val();
     if(re.test(new_lock_password)){
         $.post("/change_lock_password",new_lock_password,function(data){
-            if(data=="true"){
-                $("#change_password").css("display","none");
-                cancle_change_pass();
+            if(data){
                 alert("Change Success!")
             }
             else{
-                $("#change_password").css("display","none");
                 alert("Change Fail!")
             }
         })

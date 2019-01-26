@@ -117,10 +117,7 @@ class MyHandler(BaseHTTPRequestHandler):
         elif path == '/get_lock_status':
             self.wfile.write(self.handle_http(200, state, "text/plain"))
         elif path == '/get_log':
-            log_list = db.table("_default").all()
-            logs=""
-            for log in log_list:
-                logs = logs+str(log)+"\n"
+            logs = str(db.table("_default").all())
             self.wfile.write(self.handle_http(200, logs, "text/plain"))
 
     def do_POST(self):
@@ -167,7 +164,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
         elif self.path == "/change_lock_password":
             print(content)
-            changeLockPassword(str(content.decode()))
+            changeLockPassword(str(content))
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
 
     def extractInfoFromPB(self, raw):

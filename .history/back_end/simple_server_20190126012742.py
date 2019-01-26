@@ -120,7 +120,7 @@ class MyHandler(BaseHTTPRequestHandler):
             log_list = db.table("_default").all()
             logs=""
             for log in log_list:
-                logs = logs+str(log)+"\n"
+                logs = logs+log+"\n"
             self.wfile.write(self.handle_http(200, logs, "text/plain"))
 
     def do_POST(self):

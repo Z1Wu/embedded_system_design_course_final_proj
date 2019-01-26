@@ -117,10 +117,7 @@ class MyHandler(BaseHTTPRequestHandler):
         elif path == '/get_lock_status':
             self.wfile.write(self.handle_http(200, state, "text/plain"))
         elif path == '/get_log':
-            log_list = db.table("_default").all()
-            logs=""
-            for log in log_list:
-                logs = logs+str(log)+"\n"
+            logs = str(db.table("_default").all())
             self.wfile.write(self.handle_http(200, logs, "text/plain"))
 
     def do_POST(self):
@@ -130,15 +127,15 @@ class MyHandler(BaseHTTPRequestHandler):
         content = self.rfile.read(content_len)
         if(self.path == "/open-door"):
             # 输入密码，打开门
-            pw = content.decode()
+            pw = content
             print("post data : ", pw)
             # 把远程开锁的结果发送给wifi模块，wifi模块控制单片机开门, 同时把结果放回给浏览器显示密码的正确情况 
             if pw == PASSWORD: 
                 # 如果输入结果正确，打开门
-                self.wfile.write(self.handle_http(200, "true", "text/plain"))
+                self.wfile.write(self.handle_http(200, str(data), "text/plain"))
                 SendDataToWifiModule(REMOTE_HOST, REMOTE_HOST_PORT, b'o').start()
             elif pw != PASSWORD:
-                self.wfile.write(self.handle_http(200, "false", "text/plain"))
+                self.wfile.write(self.handle_http(200, str(data), "text/plain"))
             else:
                 pass
             
@@ -167,7 +164,7 @@ class MyHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
         elif self.path == "/change_lock_password":
             print(content)
-            changeLockPassword(str(content.decode()))
+            changeLockPassword(str(content))
             self.wfile.write(self.handle_http(200, "true", "text/plain"))
 
     def extractInfoFromPB(self, raw):

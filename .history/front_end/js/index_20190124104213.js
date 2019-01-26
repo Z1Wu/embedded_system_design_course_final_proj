@@ -21,7 +21,7 @@ function sendInputPassword() {
     //console.log(re.test(val))
     if (re.test(val)) {
         $.post("/open-door",val,function(data){
-            if(data=="true"){
+            if(data){
                 $("#time_and_msg").text("Password is True, Lock open!")
                 $("#time_and_msg").css("color","#23d160")
             }
