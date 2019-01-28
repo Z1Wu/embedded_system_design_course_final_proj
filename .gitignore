@@ -9,3 +9,5 @@ back_end/db.json
 wifi_module/build_*
 
 .history
+
+db.json
