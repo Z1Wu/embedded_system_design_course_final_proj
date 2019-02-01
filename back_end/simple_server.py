@@ -14,16 +14,13 @@ HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 9000
 
 # REMOTE WIFI MODULE
-REMOTE_HOST = '192.168.199.228'
+REMOTE_HOST = '192.168.0.20'
 REMOTE_HOST_PORT = 8080
 # REMOTE_HOST = '127.0.0.1'
 # REMOTE_HOST_PORT = 9999
 
 # create a db module
-db = TinyDB("../db.json")
-
-# todo:regex expression to match static files
-# static_file = 
+db = TinyDB("./db.json")
 
 # STATE STRING 
 STATE_PASSWORD_RETTING_SUCCESSFULLY = "密码重置成功"

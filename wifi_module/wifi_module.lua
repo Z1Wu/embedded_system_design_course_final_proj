@@ -1,13 +1,13 @@
 station_cfg={}
-station_cfg.ssid="HiWiFi_4C1756"
-station_cfg.pwd="lsj666666"
+station_cfg.ssid="360WiFi-F98C41"
+station_cfg.pwd="18927143019"
 station_cfg.save=false
 
 wifi.setmode(wifi.STATION)
 wifi.sta.config(station_cfg)
 wifi.sta.autoconnect(1)
 
-remote_server_ip = "192.168.199.171"
+remote_server_ip = "192.168.0.10"
 remote_server_port = 9090
 
 -- create server

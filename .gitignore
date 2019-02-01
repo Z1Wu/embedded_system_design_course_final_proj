@@ -6,6 +6,8 @@ record.log
 
 back_end/db.json
 
+back_end/database.py
+
 wifi_module/build_*
 
 .history
