@@ -10,6 +10,8 @@ back_end/database.py
 
 wifi_module/build_*
 
+experiment_report
+
 .history
 
 db.json

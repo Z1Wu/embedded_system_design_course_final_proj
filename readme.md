@@ -68,7 +68,7 @@
 - esp8266 G(gound) <=> 51 GND 
 
 - esp8266 Tx(transfer) <=> 51 P16(相当于 UART RX)
-
+    
 - esp8266 Rx(receive) <=> 51 P17(相当于 UART TX)
 
 ### 使用串口助手调试单片机
